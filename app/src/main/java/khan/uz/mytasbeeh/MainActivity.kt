@@ -7,33 +7,39 @@ import android.media.MediaPlayer
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.Vibrator
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import khan.uz.mytasbeeh.databinding.ActivityMainBinding
 
-@Suppress("LABEL_NAME_CLASH")
+
 class MainActivity : AppCompatActivity() {
 
 
     private var count: Int = 0
     private lateinit var binding: ActivityMainBinding
     private lateinit var mediaPlayer: MediaPlayer
-    private var i = 0
+    private var s = 0
+    private var v = 0
     private var soundPool: SoundPool? = null
     private var soundPlayer: Int = 0
-    private var isTap = true
+    private var isTapSound = true
+    private var isTapVibrator = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnSound.setImageResource(R.drawable.music_note_24)
-        binding.vibrationBtn.setImageResource(R.drawable.noun_vibrate_on)
-        binding.res.setImageResource(R.drawable.ic_baseline_refresh_24)
+        val animBtn = AnimationUtils.loadAnimation(this, R.anim.anim_btn)
+
+        binding.sound.setImageResource(R.drawable.noun_sound_on_3992693)
+        binding.vib.setImageResource(R.drawable.noun_vibration_2310451)
+        binding.ref.setImageResource(R.drawable.ic_baseline_refresh_24)
 
         val vibe: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         val audioAttributes = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME)
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
 
         soundPool = SoundPool.Builder().setMaxStreams(2).setAudioAttributes(audioAttributes).build()
 
@@ -42,11 +48,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.button.setOnClickListener {
 
-            if (isTap) {
+            if (isTapSound) {
                 soundPool?.play(soundPlayer, 1f, 1f, 1, 0, 1f)
             }
-               if (isTap) {
-                   vibe.vibrate(100)
+            if (isTapVibrator) {
+                vibe.vibrate(200)
             }
 
             count++
@@ -57,62 +63,57 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        binding.vib.setOnClickListener {
 
-        binding.btnSound.setOnClickListener {
+            v++
 
-            i++
+            if (v == 1) {
+                isTapVibrator = false
+                vibe.cancel()
+                binding.vib.startAnimation(animBtn)
+                binding.vib.setImageResource(R.drawable.vib_off_2864194)
+            } else if (v == 2) {
+                isTapVibrator = true
+                vibe.vibrate(200)
+                binding.vib.startAnimation(animBtn)
+                binding.vib.setImageResource(R.drawable.noun_vibration_2310451)
+                v = 0
+            }
 
-            if (i == 1) {
-                isTap =false
+
+        }
+
+        binding.sound.setOnClickListener {
+
+            s++
+
+            if (s == 1) {
+                isTapSound = false
                 soundPool?.stop(soundPlayer)
 
-
-                binding.btnSound.setImageResource(R.drawable.music_off_24)
-            } else if (i == 2) {
-
-
-                isTap = true
-                binding.btnSound.setImageResource(R.drawable.music_note_24)
-                i = 0
-            }
-
-
-        }
-        binding.vibrationBtn.setOnClickListener {
-
-            i++
-
-            if (i == 1) {
-                isTap =false
-               vibe.vibrate(0)
-                binding.vibrationBtn.setImageResource(R.drawable.noun_vibration_off)
-            } else if (i == 2) {
-                isTap = true
-                binding.vibrationBtn.setImageResource(R.drawable.noun_vibrate_on)
-                i = 0
+                binding.sound.startAnimation(animBtn)
+                binding.sound.setImageResource(R.drawable.noun_sound_off_1098137)
+            } else if (s == 2) {
+                isTapSound = true
+                binding.sound.startAnimation(animBtn)
+                binding.sound.setImageResource(R.drawable.noun_sound_on_3992693)
+                s = 0
             }
 
 
         }
 
 
-        binding.res.setOnClickListener {
 
+
+        binding.ref.setOnClickListener {
+            binding.ref.startAnimation(animBtn)
             count = 0
             binding.progressBar.progress = count
             binding.textView.text = count.toString()
 
         }
 
-
-    }
-
-    fun music() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.mixkit)
-
-        if (mediaPlayer.isPlaying) {
-
-        }
 
     }
 
