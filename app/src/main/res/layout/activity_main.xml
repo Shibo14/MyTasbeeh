@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#8193F8"
     tools:context=".MainActivity">
 
 
@@ -34,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="0"
+        android:text="99"
         android:textColor="#090909"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -53,7 +54,7 @@
         app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/btn_sound"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"
@@ -61,6 +62,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/vibration_btn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_sound"
+        app:layout_constraintStart_toEndOf="@+id/btn_sound"
+        app:layout_constraintTop_toTopOf="@+id/btn_sound"
+        app:srcCompat="@drawable/noun_vibrate_on" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
