@@ -30,7 +30,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+       // binding.progressBar.max = 99
         val animBtn = AnimationUtils.loadAnimation(this, R.anim.anim_btn)
+        val rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_image)
+
 
         binding.sound.setImageResource(R.drawable.noun_sound_on_3992693)
         binding.vib.setImageResource(R.drawable.noun_vibration_2310451)
@@ -44,21 +47,23 @@ class MainActivity : AppCompatActivity() {
         soundPool = SoundPool.Builder().setMaxStreams(2).setAudioAttributes(audioAttributes).build()
 
 
-        soundPlayer = soundPool!!.load(this, R.raw.tap, 1)
+        soundPlayer = soundPool!!.load(this, R.raw.click_button, 1)
+
 
         binding.button.setOnClickListener {
-
+            count++
+           binding.imageView.startAnimation(rotateAnimation)
             if (isTapSound) {
                 soundPool?.play(soundPlayer, 1f, 1f, 1, 0, 1f)
             }
             if (isTapVibrator) {
-                vibe.vibrate(200)
+                vibe.vibrate(100)
             }
+            funCount()
 
-            count++
 
-            binding.progressBar.progress = count
-            binding.textView.text = count.toString()
+
+
 
 
         }
@@ -109,12 +114,21 @@ class MainActivity : AppCompatActivity() {
         binding.ref.setOnClickListener {
             binding.ref.startAnimation(animBtn)
             count = 0
-            binding.progressBar.progress = count
+        //    binding.progressBar.progress = count
+            binding.textView.startAnimation(animBtn)
             binding.textView.text = count.toString()
-
         }
 
 
+    }
+
+    private fun funCount() {
+        if (count < 99999) {
+          //  binding.progressBar.progress = count
+            binding.textView.text = count.toString()
+        } else {
+            count = 0
+        }
     }
 
 
